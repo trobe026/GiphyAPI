@@ -1,10 +1,9 @@
 $( window ).on("load", function() {
 
   var topics = ["dog", "giraffe", "panda"];
-  // create buttons for each item in topics
+  // create buttons for each item in topics, assigning each item to an id for later
   function createButtons() {
     $.each(topics, function(index, value) {
-      console.log(value);
       var buttonItem = $("<button>");
       buttonItem.attr("id", value);
       buttonItem.append(value);
@@ -12,7 +11,7 @@ $( window ).on("load", function() {
     });
   }
   createButtons();
-// add an animal to the list without duplication
+// add an animal to the list with no dups
     $("#addNewAnimal").on("click", function() {
       event.preventDefault();
       var userInput = $("#newAnimal").val().trim();
@@ -20,7 +19,7 @@ $( window ).on("load", function() {
       $('#buttonList').html(" ");
       createButtons();
     });
-
+// when button in buttonList is clicked the animal in the id of that button populates queryURL.  Ajax response is passed to results, for each item in results an img is created with data attributes for later, images are prepended to the #images div
     $('#buttonList').on("click", 'button', function() {
       console.log("test");
       var animal = $(this).attr("id");
@@ -31,21 +30,36 @@ $( window ).on("load", function() {
         method: "GET"
       })
       .done(function(response) {
+          console.log(response);
+          $('#images').html(" ");
           var results = response.data;
+          // var timesClicked = 0;
           $.each(results, function(index, value) {
-            var image = $("<img>");
-            image.attr("src", results[index].images.fixed_height.url);
-            image.attr("alt", topics);
+            var image = $("<img>").attr({
+              "data-state": "still",
+      				'src': results[index].images.fixed_height_still.url,
+      				"data-animate": results[index].images.fixed_height.url,
+      				"data-still": results[index].images.fixed_height_still.url
+            });
             $('#images').prepend(image);
+
+// when an image on the page is clicked, the data attributes are assigned to variables, if the data-state is still, the img src is replaced by the url stored in the active variable from data-animate, data-state is also updated to active, so that when clicked again the function can run in reverse in the else block.
           })
+          $(document).on("click", 'img', function() {
+            var state = $(this).attr("data-state");
+            var active = $(this).attr("data-animate");
+            var still = $(this).attr("data-still");
+            if (state === "still") {
+              $(this).attr("data-state", active);
+              $(this).attr("src", active);
+            } else {
+              $(this).attr("data-state", still);
+              $(this).attr("src", still);
+            }
+          });
         }
       )
     });
-
-  // get 10 giphy images for the name in the button clicked
-
-
-
 
 
 // window load end
