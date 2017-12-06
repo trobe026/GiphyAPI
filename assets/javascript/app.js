@@ -45,15 +45,15 @@ $( window ).on("load", function() {
 
 // when an image on the page is clicked, the data attributes are assigned to variables, if the data-state is still, the img src is replaced by the url stored in the active variable from data-animate, data-state is also updated to active, so that when clicked again the function can run in reverse in the else block.
           })
-          $(document).on("click", 'img', function() {
+          $('#images').on("click", 'img', function() {
             var state = $(this).attr("data-state");
             var active = $(this).attr("data-animate");
             var still = $(this).attr("data-still");
             if (state === "still") {
-              $(this).attr("data-state", active);
+              $(this).attr("data-state", "active");
               $(this).attr("src", active);
             } else {
-              $(this).attr("data-state", still);
+              $(this).attr("data-state", "still");
               $(this).attr("src", still);
             }
           });
