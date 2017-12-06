@@ -1,10 +1,8 @@
 body {
   color: #ddd;
   background-color: #333;
+  text-align: center;
 }
-
-
-
 
 button {
   margin: 10px;
@@ -12,7 +10,6 @@ button {
 }
 
 img {
-  width: 51%;
   float:left;
   margin: 20px;
   border: 1px solid lightblue;
@@ -20,4 +17,12 @@ img {
 
 input {
   color: black;
+  margin: 5px;
+}
+
+.jumbotron {
+  color: lightgreen;
+}
+.glyphicon {
+  margin-left: 5px;
 }
