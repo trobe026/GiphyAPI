@@ -22,6 +22,7 @@ $( window ).on("load", function() {
       $('#newAnimal').val('');
       createButtons();
     });
+
 // when button in buttonList is clicked the animal in the id of that button populates queryURL.  Ajax response is passed to results, for each item in results an img is created with data attributes for later, images are prepended to the #images div
     $('#buttonList').on("click", 'button', function() {
       console.log("test");
@@ -36,7 +37,6 @@ $( window ).on("load", function() {
           console.log(response);
           $('#images').html(" ");
           var results = response.data;
-          // var timesClicked = 0;
           $.each(results, function(index, value) {
             var image = $("<img>").attr({
               "data-state": "still",
@@ -45,22 +45,36 @@ $( window ).on("load", function() {
       				"data-still": results[index].images.fixed_height_still.url
             });
             $('#images').prepend(image);
+            image.on('click', function(){
+              console.log(this);
+              var state = $(this).attr("data-state");
+              if (state === "still") {
+                $(this).attr("data-state", "active");
+                var active = $(this).attr("data-animate");
+                $(this).attr("src", active);
+              } else {
+                $(this).attr("data-state", "still");
+                var still = $(this).attr("data-still");
+                $(this).attr("src", still);
+              }
+            });
+
 
 // when an image on the page is clicked, the data attributes are assigned to variables, if the data-state is still, the img src is replaced by the url stored in the active variable from data-animate, data-state is also updated to active, so that when clicked again the function can run in reverse in the else block.
           })
-          $('#images').on("click", 'img', function() {
-            console.log(this);
-            var state = $(this).attr("data-state");
-            var active = $(this).attr("data-animate");
-            var still = $(this).attr("data-still");
-            if (state === "still") {
-              $(this).attr("data-state", "active");
-              $(this).attr("src", active);
-            } else {
-              $(this).attr("data-state", "still");
-              $(this).attr("src", still);
-            }
-          });
+          // $('#images').on("click", 'img', function() {
+          //   console.log(this);
+          //   var state = $(this).attr("data-state");
+          //   if (state === "still") {
+          //     $(this).attr("data-state", "active");
+          //     var active = $(this).attr("data-animate");
+          //     $(this).attr("src", active);
+          //   } else {
+          //     $(this).attr("data-state", "still");
+          //     var still = $(this).attr("data-still");
+          //     $(this).attr("src", still);
+          //   }
+          // });
         }
       )
     });
